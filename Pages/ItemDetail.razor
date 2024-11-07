@@ -1,0 +1,25 @@
+@page "/itemdetail/{Id}"
+@inject HttpClient Http
+
+<h3>Item Details</h3>
+
+@if (item == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <h4>@item.Title</h4>
+    <p>@item.Body</p>
+}
+
+@code {
+    [Parameter] public int Id { get; set; }
+    private Item item;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Obtener el detalle del item por su ID
+        item = await Http.GetFromJsonAsync<Item>($"https://jsonplaceholder.typicode.com/posts/{Id}");
+    }
+}

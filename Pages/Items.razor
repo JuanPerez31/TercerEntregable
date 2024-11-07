@@ -1,0 +1,32 @@
+@page "/items"
+@inject HttpClient Http
+
+<h3>Items List</h3>
+
+@if (items == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <ul>
+        @foreach (var item in items)
+        {
+            <li>
+                <a href="@($"/itemdetail/{item.Id}")">
+                    @item.Title
+                </a>
+            </li>
+        }
+    </ul>
+}
+
+@code {
+    private List<Item> items;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Obtener los items de la API
+        items = await Http.GetFromJsonAsync<List<Item>>("https://jsonplaceholder.typicode.com/posts");
+    }
+}
